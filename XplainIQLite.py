@@ -18,7 +18,7 @@ except Exception:
     HAS_MPL = False
 import requests
 
-from docx import Document
+from docx import Document   # ✅ correct (package is "python-docx")
 from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
@@ -501,6 +501,7 @@ if st.button(submit_label):
             st.error(f"Submission error: {msg}")
 
 st.caption("Powered by XplainIQ™ • Engineering Predictable Go-To-Market Outcomes.")
+
 
 
 
