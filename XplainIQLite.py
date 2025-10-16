@@ -18,10 +18,6 @@ except Exception:
     HAS_MPL = False
 import requests
 
-# Google Sheets (optional)
-import gspread
-from google.oauth2.service_account import Credentials
-
 from docx import Document
 from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -274,13 +270,19 @@ def to_csv(row: dict, path="leads.csv"):
         return False, f"CSV fallback failed: {e}"
 
 def persist_lead(row: dict):
-    if ZAPIER_WEBHOOK_URL:
-        ok, msg = to_zapier(row)
-        if ok: return True, msg
-    if GOOGLE_SHEET_ID and GOOGLE_SERVICE_ACCOUNT_JSON:
-        ok, msg = to_gsheet(row)
-        if ok: return True, msg
-    return to_csv(row)
+    """Simplified: just save each submission to a local CSV file."""
+    try:
+        import pandas as pd, os
+        path = "leads.csv"
+        exists = os.path.exists(path)
+        df = pd.DataFrame([row])
+        if exists:
+            df.to_csv(path, mode="a", header=False, index=False)
+        else:
+            df.to_csv(path, index=False)
+        return True, f"Saved to {path}"
+    except Exception as e:
+        return False, f"Error saving CSV: {e}"
 
 def get_query_param(key, default=""):
     # Streamlit API migration guard
@@ -497,5 +499,6 @@ if st.button(submit_label):
             st.error(f"Submission error: {msg}")
 
 st.caption("Powered by XplainIQ™ • Engineering Predictable Go-To-Market Outcomes.")
+
 
 
