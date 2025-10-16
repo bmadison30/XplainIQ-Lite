@@ -11,7 +11,11 @@ from datetime import datetime
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+    HAS_MPL = True
+except Exception:
+    HAS_MPL = False
 import requests
 
 # Google Sheets (optional)
@@ -421,7 +425,12 @@ if admin_flag:
     with c2:
         st.metric(label="Maturity Tier", value=tier)
 
-    st.subheader("Pillar Summary")
+    st.subheader("Readiness Radar")
+    if HAS_MPL:
+        fig = radar_chart(pillar_scores)
+        st.pyplot(fig, use_container_width=True)
+    else:
+        st.info("Radar chart unavailable (matplotlib not installed).")
     for pname, pscore, detail in pillar_scores:
         with st.expander(f"{pname}: {round(pscore)}"):
             st.write(pillar_commentary(pname, pscore))
@@ -488,4 +497,5 @@ if st.button(submit_label):
             st.error(f"Submission error: {msg}")
 
 st.caption("Powered by XplainIQ™ • Engineering Predictable Go-To-Market Outcomes.")
+
 
