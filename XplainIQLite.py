@@ -403,6 +403,8 @@ pillar_scores, overall = compute_scores(answers)
 tier = tier_for(overall)
 
 # Generate DOCX bytes (for admin download or Zapier/queue)
+if not HAS_DOCX:
+    st.warning("DOCX generation is unavailable (python-docx not installed).")
 docx_bytes = build_docx(
     company=company,
     pillar_scores=pillar_scores,
@@ -499,6 +501,7 @@ if st.button(submit_label):
             st.error(f"Submission error: {msg}")
 
 st.caption("Powered by XplainIQ™ • Engineering Predictable Go-To-Market Outcomes.")
+
 
 
 
