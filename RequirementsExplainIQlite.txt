@@ -1,7 +1,9 @@
-streamlit
-python-docx
-pandas
-matplotlib
-requests
-gspread
-google-auth
+streamlit>=1.38
+python-docx>=1.1.0
+pandas>=2.2.2
+numpy==1.26.4
+matplotlib==3.8.4
+requests>=2.32.3
+gspread>=6.1.2
+google-auth>=2.33.0
+
